@@ -18,8 +18,8 @@ exactly how an XSS attack works.
 If you copy one of these files and then I learn I was wrong about something, you have inherited that
 mistake and the need to correct it, as my update will not save you. On the other hand, the process
 of reading and copying code forces you to accept responsibility for it in a way that importing a
-library does not; you're already better equipped to fill the gaps than if you'd simply taken my word
-for it, as a publisher on the Node Package Manager repository, that I know what I'm doing.
+library does not; you're better equipped to fill the gaps than if you'd simply taken my word for it
+that I, as a publisher on the Node Package Manager repository, know what I'm doing.
 
 I will probably share links to this repo with people, but it's not intended to be a definitive
 archive of anything at this point. Use at your own risk.
