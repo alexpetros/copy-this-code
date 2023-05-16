@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<title>Date Picker Default</title>
+<label class=text>Signed on: <input type=date name=date></label>
+<script>
+const today = new Date()
+const day = today.getDate() < 10 ? `0${today.getDate()}` : today.getDate()
+const month = today.getMonth() < 9 ? `0${today.getMonth() + 1}` : today.getMonth() + 1
+const datePicker = document.querySelector('input[type=date]')
+datePicker.value = `${today.getFullYear()}-${month}-${day}`
+</script>
