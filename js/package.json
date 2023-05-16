@@ -1,24 +1,14 @@
 {
-  "name": "copy-this-js",
+  "name": "copy-this-code",
   "version": "0.0.1",
   "description": "Don't add it to your `package.json`. Don't credit me. Just copy the code into your project if you think it's useful.",
-  "main": "index.js",
   "type": "module",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
+  "engines": {
+    "node": ">=18"
   },
   "scripts": {
     "test": "node --test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alexpetros/copy-this-js.git"
-  },
   "author": "Alexander Petros",
-  "license": "0BSD",
-  "bugs": {
-    "url": "https://github.com/alexpetros/copy-this-js/issues"
-  },
-  "homepage": "https://github.com/alexpetros/copy-this-js#readme"
+  "license": "0BSD"
 }

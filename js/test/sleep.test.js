@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import * as sleep from '../lib/sleep.js'
+import * as sleep from '../sleep.js'
 
 test('it sleeps for 100 ms', async () => {
   const startTime = (new Date()).getTime()

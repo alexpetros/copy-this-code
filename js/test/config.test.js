@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import config from '../lib/config.js'
+import config from '../config.js'
 
 test('it included the first item', async () => {
   assert.equal(config.TEST_API_KEY, 'thisisnotarealkey' )
