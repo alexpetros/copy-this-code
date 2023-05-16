@@ -2,6 +2,9 @@
 Don't add it to your `package.json`. Don't credit me. Just copy the code into your project if you
 think it's useful.
 
+Make sure to use GitHub permalinks if sharing; I plan to keep the repo up indefinitely but files
+might move around.
+
 ## Rationale
 This repo serves two purposes: one personal and the other pedagogical.
 
