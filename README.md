@@ -1,13 +1,14 @@
-# Copy This JS
+# Copy This Code
 Don't add it to your `package.json`. Don't credit me. Just copy the code into your project if you
 think it's useful.
 
 ## Rationale
 This repo serves two purposes: one personal and the other pedagogical.
 
-First, it reflects my understanding of the best way to do various common tasks in JavaScript.  I am often
-surprised at how easy it is to implement a lot of the things that we routinely turn to libraries
-for. I'm creating a little space for myself to save these snippets so that I can refer to them.
+First, it reflects my understanding of the best way to do various common tasks, originally in
+JavaScript but now in a bunch of languages.  I am often surprised at how easy it is to implement a
+lot of the things that we routinely turn to libraries for. I'm creating a little space for myself to
+save these snippets so that I can refer to them.
 
 The second purpose is to challenge myself and, eventually, others, to better develop a sense of when
 it is worth learning how something is done versus accepting someone's interface for doing it. To use
