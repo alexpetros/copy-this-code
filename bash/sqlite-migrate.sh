@@ -10,13 +10,12 @@
 # THe next line of SQL will get you everything you need:
 # CREATE TABLE _migrations (filename TEXT, timestamp INTEGER DEFAULT CURRENT_TIMESTAMP) STRICT;
 #
-# This script will migrations directory (which needs to be specified below) and
-# get all the files that end in .sql, in numberical order. Then it will check
-# the _migrations table to see if a file with that name has been applied.
-#
-# Script should be run from the root of the source directory
+# This script will look in the migrations directory (which needs to be
+# specified below) and get all the files that end in .sql, in numberical order.
+# Then it will check the _migrations table to see if a file with that name has
+# been applied. It will error out if any of the files in that directory have
+# whitespace in their name.
 
-# Note that this script will exit on any failures at any point (unless inside an if test)
 set -euo pipefail
 
 DEFAULT_DB_FILEPATH=""
