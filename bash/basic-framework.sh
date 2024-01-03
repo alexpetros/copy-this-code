@@ -1,4 +1,5 @@
 #!/bin/bash
+# Basic framework for starting a shell script
 
 set -euo pipefail
 

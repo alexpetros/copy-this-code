@@ -42,7 +42,8 @@ function check_migration {
 function apply_migration {
   migration_filepath="$1"
   # Run the migration inside of a transaction
-  sqlite3 "$DATABASE_FP" << EOF
+  # The -bail option makes the CLI exit on the first error
+  sqlite3 -bail "$DATABASE_FP" << EOF
   BEGIN; $(cat "$migration_filepath") ; COMMIT;
 EOF
   # Save the migration's name if it was successfully applied
