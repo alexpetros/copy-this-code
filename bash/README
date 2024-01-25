@@ -1,3 +1,5 @@
 Some useful bash resources:
 * https://google.github.io/styleguide/shellguide.html
 * https://sharats.me/posts/shell-script-best-practices/
+* http://www.etalabs.net/sh_tricks.html
+  https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md
