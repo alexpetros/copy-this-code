@@ -27,3 +27,8 @@ that I, as a publisher on the Node Package Manager repository, know what I'm doi
 
 I will probably share links to this repo with people, but it's not intended to be a definitive
 archive of anything at this point. Use at your own risk.
+
+## Licensing
+All code in this repo is licensed under the 0-clause BSD license. Sometimes code is noted as being
+shared by someone else; if it's included here, they have agreed that it can be shared under the
+same terms.
