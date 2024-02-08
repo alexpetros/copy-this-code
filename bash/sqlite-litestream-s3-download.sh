@@ -7,7 +7,7 @@ set -euo pipefail
 export $(cat .env | xargs)
 
 db_name="sqlite.db"
-s3_litestream_url="s3://litstream-bucket/backup"
+s3_litestream_url="s3://TEST_BUCKET/backup"
 
 if [[ -f "$db_name"-wal ]]; then
   echo "Database is still in use - make sure WAL is cleaned up."
@@ -15,10 +15,10 @@ if [[ -f "$db_name"-wal ]]; then
 fi
 
 rm -f "$db_name"
-litestream restore -o $"db_name" "$s3_litestream_url"
+litestream restore -o "$db_name" "$s3_litestream_url"
 
-rm -f "$dn_name".tmp-wal
-rm -f "$dn_name".tmp-shm
+rm -f "$db_name".tmp-wal
+rm -f "$db_name".tmp-shm
 
 # I use this to copy the backup to a directory above this one
 # You can comment it out if you want
