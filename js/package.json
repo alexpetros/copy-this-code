@@ -4,7 +4,7 @@
   "description": "Don't add it to your `package.json`. Don't credit me. Just copy the code into your project if you think it's useful.",
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "test": "node --test"
