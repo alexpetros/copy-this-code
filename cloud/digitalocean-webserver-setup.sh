@@ -1,12 +1,14 @@
 #!/bin/bash
+#
+# Digital Ocean Webserver Setup
+# Tested on Ubuntu 23.10 x64 and Ubuntu 22.04 (LTS) x64
 set -ev
 
 # CHANGE THESE TO YOUR DESIRED ACCOUNT NAME AND DOTFILES_URL
 export PERSONAL_USER="awp"
 export DOTFILES_URL="https://github.com/alexpetros/dotfiles"
 
-
-export NODE_CONF_URL="https://raw.githubusercontent.com/alexpetros/dotfiles/main/server/node.conf"
+# Leave these
 export DEBIAN_FRONTEND="noninteractive"
 
 # Install basic packages
@@ -18,11 +20,12 @@ apt-get -y install nginx make fzf sqlite3
 snap install --classic certbot
 ln -s /snap/bin/certbot /usr/bin/certbot
 
-# Download basic redirect conf and link it to sites-enabled
-curl "$NODE_CONF_URL" > /etc/nginx/sites-available/node
-ln -s /etc/nginx/sites-available/node node
-rm /etc/nginx/sites-enabled/default
-systemctl restart nginx
+# # This is from when I had a custom nginx setuo for node
+# # Leaving it here for whenever I setup one again
+# curl "$NODE_CONF_URL" > /etc/nginx/sites-available/node
+# ln -s /etc/nginx/sites-available/node node
+# rm /etc/nginx/sites-enabled/default
+# systemctl restart nginx
 
 # Verify that nginx is serving on port 80
 systemctl status nginx --no-pager --full
