@@ -59,7 +59,7 @@ cat > /var/www/main/index.php <<"EOF"
 <?php echo "If you don't see the PHP tags, you're good to go!" ?>
 EOF
 
-chown -r www-data:www-data /var/www/main
+chown -R www-data:www-data /var/www/main
 
 # Verify that nginx is serving on port 80
 systemctl status nginx --no-pager --full
