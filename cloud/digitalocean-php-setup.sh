@@ -63,7 +63,7 @@ chown -R www-data:www-data /var/www/main
 
 # Verify that nginx is serving on port 80
 systemctl status nginx --no-pager --full
-curl localhost:80 2>/dev/null | grep nginx > /dev/null
+curl localhost:80 2>/dev/null | grep "good to go" > /dev/null
 
 # Setup firewall to only allow nginx and ssh access
 ufw allow 'OpenSSH'
