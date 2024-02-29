@@ -83,7 +83,7 @@ usermod -aG sudo $PERSONAL_USER
 usermod -aG admin $PERSONAL_USER
 rsync --archive --chown=$PERSONAL_USER:$PERSONAL_USER ~/.ssh /home/$PERSONAL_USER
 
-echo '%admin ALL=(ALL) ALL NOPASSWD: ALL ' > /etc/sudoers.d/passwordless
+echo '%admin        ALL=(ALL)       NOPASSWD: ALL' > /etc/sudoers.d/admin-passwordless
 
 # Login to $PERSONAL_USER and install dotfiles
 sudo -i -u $PERSONAL_USER bash << EOF
