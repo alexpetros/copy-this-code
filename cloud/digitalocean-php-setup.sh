@@ -8,6 +8,9 @@ set -ev
 export PERSONAL_USER="awp"
 export DOTFILES_URL="https://github.com/alexpetros/dotfiles"
 
+# Change these if you're using a different distro
+export SERVER_USER="www-data"
+
 # Leave these
 export DEBIAN_FRONTEND="noninteractive"
 
@@ -59,7 +62,7 @@ cat > /var/www/main/index.php <<"EOF"
 <?php echo "If you don't see the PHP tags, you're good to go!" ?>
 EOF
 
-chown -R www-data:www-data /var/www/main
+chown -R "$SERVER_USER:$SERVER_USER" /var/www/main
 
 # Verify that nginx is serving on port 80
 systemctl status nginx --no-pager --full
@@ -79,9 +82,11 @@ EOF
 
 # Create non-root user with the authorized ssh keys; note that this is a passwordless account
 useradd --create-home --shell /bin/bash $PERSONAL_USER
-usermod -aG sudo $PERSONAL_USER
-usermod -aG admin $PERSONAL_USER
-rsync --archive --chown=$PERSONAL_USER:$PERSONAL_USER ~/.ssh /home/$PERSONAL_USER
+usermod --append --groups sudo $PERSONAL_USER
+usermod --append --groups admin $PERSONAL_USER
+usermod --append --groups www-data $PERSONAL_USER
+rsync --archive --chown="$PERSONAL_USER:$PERSONAL_USER" ~/.ssh "/home/$PERSONAL_USER"
+
 
 echo '%admin        ALL=(ALL)       NOPASSWD: ALL' > /etc/sudoers.d/admin-passwordless
 
