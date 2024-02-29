@@ -10,6 +10,7 @@ export DOTFILES_URL="https://github.com/alexpetros/dotfiles"
 
 # Change these if you're using a different distro
 export SERVER_USER="www-data"
+export WWW_DIR="/var/www"
 
 # Leave these
 export DEBIAN_FRONTEND="noninteractive"
@@ -24,24 +25,24 @@ snap install --classic certbot
 ln -s /snap/bin/certbot /usr/bin/certbot
 
 # Create the nginx config
-cat > /etc/nginx/sites-available/main <<"EOF"
+cat > /etc/nginx/sites-available/main <<EOF
 server {
     listen 80;
     server_name your_domain www.your_domain;
-    root /var/www/main;
+    root $WWW_DIR/main;
 
     index index.html index.htm index.php;
 
     location / {
-        try_files $uri $uri/ =404;
+        try_files \$uri \$uri/ =404;
     }
 
-    location ~ \.php$ {
+    location ~ \\.php\$ {
         include snippets/fastcgi-php.conf;
         fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
      }
 
-    location ~ /\.ht {
+    location ~ /\\.ht {
         deny all;
     }
 }
@@ -55,14 +56,16 @@ nginx -t
 systemctl restart nginx
 
 
-mkdir /var/www/main
-cat > /var/www/main/index.php <<"EOF"
+mkdir $WWW_DIR/main
+cat > $WWW_DIR/main/index.php <<"EOF"
 <title>Test Site</title>
 <h1>Verification</h1>
 <?php echo "If you don't see the PHP tags, you're good to go!" ?>
 EOF
 
-chown -R "$SERVER_USER:$SERVER_USER" /var/www/main
+chown -R "$SERVER_USER:$SERVER_USER" "$WWW_DIR"
+chgrp -R "$SERVER_USER" "$WWW_DIR"
+chmod g+rw /var/www -R
 
 # Verify that nginx is serving on port 80
 systemctl status nginx --no-pager --full
@@ -86,7 +89,6 @@ usermod --append --groups sudo $PERSONAL_USER
 usermod --append --groups admin $PERSONAL_USER
 usermod --append --groups www-data $PERSONAL_USER
 rsync --archive --chown="$PERSONAL_USER:$PERSONAL_USER" ~/.ssh "/home/$PERSONAL_USER"
-
 
 echo '%admin        ALL=(ALL)       NOPASSWD: ALL' > /etc/sudoers.d/admin-passwordless
 
