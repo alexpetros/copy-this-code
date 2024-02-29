@@ -77,15 +77,13 @@ ed /etc/ssh/sshd_config << EOF
 wq
 EOF
 
-groupadd admin
-
 # Create non-root user with the authorized ssh keys; note that this is a passwordless account
 useradd --create-home --shell /bin/bash $PERSONAL_USER
 usermod -aG sudo $PERSONAL_USER
 usermod -aG admin $PERSONAL_USER
 rsync --archive --chown=$PERSONAL_USER:$PERSONAL_USER ~/.ssh /home/$PERSONAL_USER
 
-echo '%admin ALL=(ALL) ALL NOPASSWD: ALL ' > /etc/sudoers.d
+echo '%admin ALL=(ALL) ALL NOPASSWD: ALL ' > /etc/sudoers.d/passwordless
 
 # Login to $PERSONAL_USER and install dotfiles
 sudo -i -u $PERSONAL_USER bash << EOF
