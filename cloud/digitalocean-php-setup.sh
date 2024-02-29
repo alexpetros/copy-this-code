@@ -25,7 +25,7 @@ cat > /etc/nginx/sites-available/main <<"EOF"
 server {
     listen 80;
     server_name your_domain www.your_domain;
-    root /var/www/your_domain;
+    root /var/www/main;
 
     index index.html index.htm index.php;
 
