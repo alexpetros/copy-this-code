@@ -16,9 +16,10 @@ export WWW_DIR="/var/www"
 export DEBIAN_FRONTEND="noninteractive"
 
 # Install basic packages
+# Note that the Ubuntu PHP is PHP 8.1
 apt-get -y update
 apt-get -y upgrade
-apt-get -y install nginx make fzf sqlite3 php php-fpm
+apt-get -y install nginx make fzf sqlite3 php php-fpm php8.1-sqlite3
 
 # Install certbot
 snap install --classic certbot
@@ -52,10 +53,11 @@ EOF
 ln -s /etc/nginx/sites-available/main /etc/nginx/sites-enabled/
 unlink /etc/nginx/sites-enabled/default
 
+# Restart the server
 nginx -t
 systemctl restart nginx
 
-
+# Create the main directory and add an index.php in it
 mkdir $WWW_DIR/main
 cat > $WWW_DIR/main/index.php <<"EOF"
 <title>Test Site</title>
@@ -63,6 +65,7 @@ cat > $WWW_DIR/main/index.php <<"EOF"
 <?php echo "If you don't see the PHP tags, you're good to go!" ?>
 EOF
 
+# Make sure that the server user owns the WWW_DIR
 chown -R "$SERVER_USER:$SERVER_USER" "$WWW_DIR"
 chgrp -R "$SERVER_USER" "$WWW_DIR"
 chmod g+rw /var/www -R
@@ -90,6 +93,7 @@ usermod --append --groups admin $PERSONAL_USER
 usermod --append --groups www-data $PERSONAL_USER
 rsync --archive --chown="$PERSONAL_USER:$PERSONAL_USER" ~/.ssh "/home/$PERSONAL_USER"
 
+# Allow admins to use sudo without a password
 echo '%admin        ALL=(ALL)       NOPASSWD: ALL' > /etc/sudoers.d/admin-passwordless
 
 # Login to $PERSONAL_USER and install dotfiles
