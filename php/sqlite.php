@@ -5,7 +5,7 @@
 <?php
 function db_connect($file) {
     try {
-        $db = new PDO($file, '', '', [PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_PERSISTENT => false,
+        $db = new PDO("sqlite:$file", '', '', [PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_PERSISTENT => false,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, ]);
         $db->exec('PRAGMA journal_mode = wal2;');
         $db->exec('PRAGMA synchronous = normal;');
