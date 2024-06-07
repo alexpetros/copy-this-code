@@ -47,7 +47,7 @@ function apply_migration {
   BEGIN; $(cat "$migration_filepath") ; COMMIT;
 EOF
   # Save the migration's name if it was successfully applied
-  sqlite3 "$DATABASE_FP" "INSERT INTO _migrations(filename) VALUES ('$migration_name');"
+  sqlite3 -batch "$DATABASE_FP" "INSERT INTO _migrations(filename) VALUES ('$migration_name');"
 }
 
 # Exit if any of the file names in this directory have spaces in them

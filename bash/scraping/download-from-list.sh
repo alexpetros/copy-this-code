@@ -2,7 +2,6 @@
 # Download all the files from a list of URLs
 set -euo pipefail
 
-URLS_LIST="urls.txt"
 OUTPUT_DIR="./files"
 
 function quit {
@@ -10,12 +9,10 @@ function quit {
   exit 1
 }
 
-urls=$(cat "$URLS_LIST")
-
-for url in $urls; do
+# Read each line from STDIN
+while IFS='$\n' read -r line; do
   # Save the file as whatever the last file is
-  filename=$(echo $url | awk -F '/' '{ print $NF }')
-  curl $url > "$OUTPUT_DIR/$filename"
+  filename=$(echo $line | awk -F '/' '{ print $NF }')
+  curl $line > "$OUTPUT_DIR/$filename"
   sleep .3
 done
-
