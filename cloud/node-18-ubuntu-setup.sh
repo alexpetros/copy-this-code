@@ -20,7 +20,7 @@ ln -s /snap/bin/certbot /usr/bin/certbot
 
 # Download basic redirect conf and link it to sites-enabled
 curl "$NODE_CONF_URL" > /etc/nginx/sites-available/node
-ln -s /etc/nginx/sites-available/node node
+ln -s /etc/nginx/sites-available/node /etc/nginx/sites-enabled/node
 rm /etc/nginx/sites-enabled/default
 systemctl restart nginx
 
