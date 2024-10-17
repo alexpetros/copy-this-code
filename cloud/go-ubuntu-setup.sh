@@ -76,8 +76,8 @@ Type=simple
 User=$SERVICE_NAME
 Restart=always
 RestartSec=1s
-StandardOutput=append:/home/user/$SERVICE_NAME/output.log
-StandardError=append:/home/user/error.log
+StandardOutput=append:/var/log/$SERVICE_NAME/output.log
+StandardError=append:/var/log/$SERVICE_NAME/error.log
 ExecStart=/home/$SERVICE_NAME/$EXECUTEABLE_NAME
 
 [Install]
