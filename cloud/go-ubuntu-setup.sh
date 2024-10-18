@@ -29,7 +29,7 @@ ufw status
 # Download basic redirect conf and link it to sites-enabled
 cat > /etc/nginx/sites-available/$SERVICE_NAME <<EOF
 server {
-  server_name example.com
+  server_name example.com;
 
   location / {
     proxy_pass http://localhost:9090;
