@@ -1,19 +1,21 @@
 #!/bin/bash
 #
+# Note that this needs to be run as root
+# On a fresh install, I typically just `cat go-ubuntu-setup.sh | ssh root@YOUR_VPS_IP`
 # Tested for Ubuntu 24.04 (LTS) x64
 
-set -euo pipefail
+set -veuo pipefail
 
 export DEBIAN_FRONTEND="noninteractive"
 
-export SERVICE_USER="goweb"
-export SERVICE_NAME="goweb"
+export RUNAS_USER="goweb"
+export SERVICE_NAME="gomain"
 export EXECUTEABLE_NAME="main"
 
 # Create server user; note that this is a passwordless account
-useradd -m -s /bin/bash $SERVICE_USER
-usermod -aG sudo $SERVICE_USER
-rsync --archive --chown=$SERVICE_USER:$SERVICE_USER ~/.ssh /home/$SERVICE_USER
+useradd -m -s /bin/bash $RUNAS_USER
+usermod -aG sudo $RUNAS_USER
+rsync --archive --chown=$RUNAS_USER:$RUNAS_USER ~/.ssh /home/$RUNAS_USER
 
 # Install packages
 apt-get -y install nginx golang make sqlite3
@@ -60,10 +62,10 @@ systemctl status nginx --no-pager --full
 # wq
 # EOF
 
-echo 'export PATH=$PATH:/usr/local/go/bin' >> /home/$SERVICE_USER/.profile
+echo 'export PATH=$PATH:/usr/local/go/bin' >> /home/$RUNAS_USER/.profile
 
 # Make log directory
-mdkir /var/log/$SERVICE_NAME
+mkdir /var/log/$SERVICE_NAME
 
 # Setup go service for systemd
 cat > /lib/systemd/system/$SERVICE_NAME.service <<EOF
@@ -71,24 +73,30 @@ cat > /lib/systemd/system/$SERVICE_NAME.service <<EOF
 Description=$SERVICE_NAME
 
 [Service]
-WorkingDirectory=/home/$SERVICE_NAME
+WorkingDirectory=/home/$RUNAS_USER
 Type=simple
-User=$SERVICE_NAME
+User=$RUNAS_USER
 Restart=always
 RestartSec=1s
 StandardOutput=append:/var/log/$SERVICE_NAME/output.log
 StandardError=append:/var/log/$SERVICE_NAME/error.log
-ExecStart=/home/$SERVICE_NAME/$EXECUTEABLE_NAME
+ExecStart=/home/$RUNAS_USER/go/bin/$EXECUTEABLE_NAME
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-# Login to $SERVICE_USER
-sudo -i -u $SERVICE_USER bash << EOF
-echo "PATH=$PATH:$HOME/go/bin" >> .profile
-mkdir /var
+# Login to $RUNAS_USER, and set up the go environment,
+# You can also add the necessary commands here to install your program
+# i.e. git clone, make, and so on
+sudo -i -u $RUNAS_USER bash << EOF
+echo "PATH=$PATH:/home/$RUNAS_USER/go/bin" >> .profile
+source .profile
+cd /home/$RUNAS_USER
+# ADD PROGRAM INSTALLATION COMMANDS HERE
 EOF
+
+systemctl restart $SERVICE_NAME
 
 echo "You're done!"
 echo "Don't forget you need to run: certbot --nginx -d example.com -d www.example.com"
