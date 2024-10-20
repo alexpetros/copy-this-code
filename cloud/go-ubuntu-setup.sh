@@ -90,7 +90,7 @@ EOF
 # You can also add the necessary commands here to install your program
 # i.e. git clone, make, and so on
 sudo -i -u $RUNAS_USER bash << EOF
-echo "PATH=$PATH:/home/$RUNAS_USER/go/bin" >> .profile
+echo "PATH=\$PATH:/home/$RUNAS_USER/go/bin" >> .profile
 source .profile
 cd /home/$RUNAS_USER
 # ADD PROGRAM INSTALLATION COMMANDS HERE
