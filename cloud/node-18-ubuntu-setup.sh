@@ -1,7 +1,6 @@
 #!/bin/bash
 set -ev
 
-export NODE_CONF_URL="https://raw.githubusercontent.com/alexpetros/dotfiles/main/server/node.conf"
 export DEBIAN_FRONTEND="noninteractive"
 export SERVER_USER="node"
 export PERSONAL_USER="awp"
@@ -19,7 +18,29 @@ snap install --classic certbot
 ln -s /snap/bin/certbot /usr/bin/certbot
 
 # Download basic redirect conf and link it to sites-enabled
-curl "$NODE_CONF_URL" > /etc/nginx/sites-available/node
+cat > /etc/nginx/sites-available/node <<EOF
+# Server configuration for node application
+server {
+	index index.html;
+
+	# Uncomment if you have a custom error page to use
+	# error_page 404 404.html;
+
+	# This is the ubuntu default www directory; replace with your chosen one
+	root /var/www/html;
+	server_name example.com;
+
+	location / {
+		proxy_pass http://localhost:8080;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection 'upgrade';
+		proxy_set_header Host $host;
+		proxy_cache_bypass $http_upgrade;
+	}
+}
+EOF
+
 ln -s /etc/nginx/sites-available/node /etc/nginx/sites-enabled/node
 rm /etc/nginx/sites-enabled/default
 systemctl restart nginx
@@ -57,4 +78,4 @@ cd dotfiles && make
 EOF
 
 echo "You're done!"
-echo "Don't forget you need to run: certbot --nginx -d example.com -d www.example.com"
+echo "Don't forget to update your nginx server name and then run: certbot --nginx -d example.com -d www.example.com"
