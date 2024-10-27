@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Digital Ocean PHP Server Setup
-# Tested on Ubuntu 22.04 (LTS) x64
+# Tested on Ubuntu 24.04 (LTS) x64
 set -ev
 
 # CHANGE THESE TO YOUR DESIRED ACCOUNT NAME AND DOTFILES_URL
@@ -9,6 +9,7 @@ export PERSONAL_USER="awp"
 export DOTFILES_URL="https://github.com/alexpetros/dotfiles"
 
 # Change these if you're using a different distro
+export DOMAIN="garbagedaylive.com"
 export SERVER_USER="www-data"
 export WWW_DIR="/var/www"
 
@@ -16,10 +17,11 @@ export WWW_DIR="/var/www"
 export DEBIAN_FRONTEND="noninteractive"
 
 # Install basic packages
-# Note that the Ubuntu PHP is PHP 8.1
+# Note that the Ubuntu PHP is PHP 8.3
 apt-get -y update
 apt-get -y upgrade
-apt-get -y install nginx make fzf sqlite3 php php-fpm php8.1-sqlite3
+apt-get -y install nginx make fzf sqlite3 php php-fpm php8.3-sqlite3
+apt-get -y remove apache2
 
 # Install certbot
 snap install --classic certbot
@@ -29,19 +31,24 @@ ln -s /snap/bin/certbot /usr/bin/certbot
 cat > /etc/nginx/sites-available/main <<EOF
 server {
     listen 80;
-    server_name your_domain www.your_domain;
+    server_name $DOMAIN;
     root $WWW_DIR/main;
 
-    index index.html index.htm index.php;
+    index index.php;
 
     location / {
-        try_files \$uri \$uri/ =404;
+      try_files \$uri \$uri/ @extensionless-php;
+      index index.php;
+    }
+
+    location @extensionless-php {
+      rewrite ^(.*)$ \$1.php last;
     }
 
     location ~ \\.php\$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
-     }
+      include snippets/fastcgi-php.conf;
+      fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+    }
 
     location ~ /\\.ht {
         deny all;
@@ -80,12 +87,6 @@ ufw allow 'Nginx Full'
 ufw --force enable
 ufw status
 
-# Disable password authentication on ssh (yes I'm using ed)
-ed /etc/ssh/sshd_config << EOF
-%s/^PasswordAuthentication.*/PasswordAuthentication no
-wq
-EOF
-
 # Create non-root user with the authorized ssh keys; note that this is a passwordless account
 useradd --create-home --shell /bin/bash $PERSONAL_USER
 usermod --append --groups sudo $PERSONAL_USER
@@ -96,10 +97,10 @@ rsync --archive --chown="$PERSONAL_USER:$PERSONAL_USER" ~/.ssh "/home/$PERSONAL_
 # Allow admins to use sudo without a password
 echo '%admin        ALL=(ALL)       NOPASSWD: ALL' > /etc/sudoers.d/admin-passwordless
 
-# Login to $PERSONAL_USER and install dotfiles
-sudo -i -u $PERSONAL_USER bash << EOF
-git clone $DOTFILES_URL
-EOF
+# # Login to $PERSONAL_USER and install dotfiles
+# sudo -i -u $PERSONAL_USER bash << EOF
+# git clone $DOTFILES_URL
+# EOF
 
 echo "You're done!"
-echo "Don't forget you need to run: certbot --nginx -d example.com -d www.example.com"
+echo "Don't forget you need to run: certbot --nginx -d $DOMAIN"

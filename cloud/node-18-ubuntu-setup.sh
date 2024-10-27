@@ -3,10 +3,10 @@ set -ev
 
 export DEBIAN_FRONTEND="noninteractive"
 export SERVER_USER="node"
-export PERSONAL_USER="awp"
 
 # Create server user; note that this is a passwordless account
 useradd -m -s /bin/bash $SERVER_USER
+rsync --archive --chown=$SERVER_USER:$SERVER_USER ~/.ssh /home/$SERVER_USER
 
 # Install basic packages
 apt-get -y update
