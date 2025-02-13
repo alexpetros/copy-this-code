@@ -1,6 +1,6 @@
-import { escapeHtmlText } from './escape-html.js'
 /**
  * Tiny subset of Markdown implemented with regex.
+ * Author: Alexander Petros
  *
  * I wanted a way to let the users add links and bold text to the tournament
  * description, but didn't want to deal with escaping for XSS scripting.
@@ -12,6 +12,8 @@ import { escapeHtmlText } from './escape-html.js'
  * I might add some more stuff as I need it, but this is pretty good for the thing
  * I wanted, which is a text box that felt customizable, within limits.
  */
+import { escapeHtmlText } from './escape-html.js'
+
 export function markdownToHtml(str) {
   const rules = [
     // if a url matches the escaped version of https://
