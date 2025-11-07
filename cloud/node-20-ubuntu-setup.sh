@@ -5,8 +5,8 @@ set -ev
 
 export DEBIAN_FRONTEND="noninteractive"
 export SERVER_USER="node"
-export RUNAS_USER="awp"
-export DOMAIN="garbagedaylive.com"
+export RUNAS_USER="www"
+export DOMAIN="example.com"
 
 # Create server user; note that this is a passwordless account
 useradd -m -s /bin/bash $SERVER_USER || echo "User $SERVER_USER" already exists
